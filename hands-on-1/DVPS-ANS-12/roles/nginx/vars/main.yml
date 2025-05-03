@@ -1,0 +1,7 @@
+---
+# roles/nginx/vars/main.yml
+
+# task files dict for supported OS
+nginx_supported_os_family:
+  redhat: redhat.yml
+  debian: debian.yml

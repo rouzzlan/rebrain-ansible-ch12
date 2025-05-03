@@ -1,0 +1,43 @@
+---
+- name: Copy all files to remote ansible controller
+  hosts: all
+  vars:
+    galaxy_exec_path:
+    role_dir: /home/user/task/ansible-roles
+    file_paths:
+      - { src_path: "DVPS-ANS-12/roles/", dest_path: "/home/user/task/DVPS-ANS-12" }
+      - { src_path: "DVPS-ANS-12/install_nginx.yml", dest_path: "/home/user/task" }
+      - { src_path: ".ansible-lint", dest_path: "/home/user/task" }
+      - { src_path: "ansible.cfg", dest_path: "/home/user/task/DVPS-ANS-12" }
+      - { src_path: "inventory.yaml", dest_path: "/home/user/task/DVPS-ANS-12" }
+
+  tasks:
+    - name: Install lint and upload required files
+      block:
+        - name: Install ansible-lint on Debian/Ubuntu latest version
+          become: true
+          ansible.builtin.apt:
+            name: ansible-lint
+            state: latest
+            update_cache: true
+
+        - name: Ensure directories exist
+          ansible.builtin.file:
+            path: /home/user/task/DVPS-ANS-12/
+            state: directory
+            mode: "0770"
+
+        - name: Upload needed files for hands-on on Rebrain
+          ansible.builtin.copy:
+            src: "{{ item.src_path }}"
+            dest: "{{ item.dest_path }}"
+            mode: "0660"
+          loop: "{{ file_paths }}"
+
+        - name: Ansible config for the user
+          ansible.builtin.copy:
+            content: |
+              [defaults]
+              roles_path = /home/user/task/DVPS-ANS-12
+            dest: ~/.ansible.cfg
+            mode: "0660"

@@ -1,0 +1,16 @@
+---
+# roles/nginx/tasks/generic.yml
+- name: Nginx generic tasks
+  block:
+    - name: Start Nginx service
+      become: true
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+    - name: Add the fact about nginx version
+      ansible.builtin.set_fact:
+        nginx_installed_version: "{{ ansible_facts.packages.nginx[0].version }}"

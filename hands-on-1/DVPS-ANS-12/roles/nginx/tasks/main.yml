@@ -1,0 +1,16 @@
+---
+# tasks file for nginx
+- name: Сollecting only the necessary facts
+  ansible.builtin.setup:
+    filter:
+      - os_family
+      - ansible_distribution
+      - ansible_distribution_release
+      - ansible_distribution_version
+
+- name: Set default value if item is not present in the list
+  ansible.builtin.set_fact:
+    nginx_task_file: "{{ nginx_supported_os_family[ansible_facts['os_family'] | lower] | default('stub.yml') }}"
+
+- name: Include tasks for the proper OS
+  ansible.builtin.include_tasks: "{{ nginx_task_file }}"

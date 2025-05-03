@@ -1,0 +1,41 @@
+---
+# roles/nginx/tasks/redhat.yml
+- name: Nginx installation
+  block:
+
+    - name: Add Nginx repository on CentOS/RHEL
+      become: true
+      ansible.builtin.yum_repository:
+        name: nginx
+        description: Official Nginx repository
+        baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+        gpgcheck: true
+        gpgkey: https://nginx.org/keys/nginx_signing.key
+        enabled: true
+    - name: Install Nginx on CentOS/RHEL latest version
+      become: true
+      ansible.builtin.dnf:
+        name: nginx
+        state: latest
+        update_cache: true
+      when: nginx_redhat_nginx_version == ""
+    - name: Install Nginx on CentOS/RHEL sepsific version {{ nginx_redhat_nginx_version }}
+      become: true
+      ansible.builtin.dnf:
+        name: "nginx-{{ nginx_redhat_nginx_version }}"
+        state: present
+        allow_downgrade: true # если мы захотим переустановить пакет меньшей версии
+        update_cache: true
+      when: nginx_redhat_nginx_version != ""
+
+- name: Start nginx Service, then get package facts and publish them to the default page
+  block:
+    - name: Include common tasks
+      ansible.builtin.include_tasks: generic.yml
+
+    - name: Copy the new welcome web page
+      become: true
+      ansible.builtin.template:
+        src: index.html.j2
+        dest: "{{ nginx_redhat_welcome_page_path }}/index.html"
+        mode: "0644"

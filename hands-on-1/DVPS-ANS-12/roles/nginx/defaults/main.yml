@@ -1,0 +1,17 @@
+---
+# roles/nginx/defaults/main.yml
+
+# path to default web page
+nginx_redhat_welcome_page_path: "/usr/share/nginx/html"
+nginx_debian_welcome_page_path: "/usr/share/nginx/html"
+
+# nginx_redhat_nginx_version variable
+#   leave blank for the latest nginx version
+#   or specify the version like in the example below
+#   nginx_redhat_nginx_version: "1.24.0"
+#   see available versions from the following link
+#   http://nginx.org/en/download.html
+nginx_redhat_nginx_version: ""
+
+# the same as nginx_redhat_nginx_version but for deb
+nginx_debian_nginx_version: ""

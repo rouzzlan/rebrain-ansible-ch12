@@ -1,0 +1,3 @@
+- name: Not Supported OS
+  ansible.builtin.fail:
+    ansible.builtin.msg: "This role doesn't support {{ ansible_facts['os_family'] }} OS Family!. Please check the role's meta section"
