@@ -6,8 +6,8 @@
     role_dir: /home/user/task/ansible-roles
     file_paths:
       - { src_path: "DVPS-ANS-12/roles/", dest_path: "/home/user/task/DVPS-ANS-12" }
-      - { src_path: "DVPS-ANS-12/install_nginx.yml", dest_path: "/home/user/task" }
-      - { src_path: ".ansible-lint", dest_path: "/home/user/task" }
+      - { src_path: "DVPS-ANS-12/install_nginx.yml", dest_path: "/home/user/task/DVPS-ANS-12" }
+      - { src_path: ".ansible-lint", dest_path: "/home/user/task/DVPS-ANS-12" }
       - { src_path: "ansible.cfg", dest_path: "/home/user/task/DVPS-ANS-12" }
       - { src_path: "inventory.yaml", dest_path: "/home/user/task/DVPS-ANS-12" }
 
@@ -41,3 +41,4 @@
               roles_path = /home/user/task/DVPS-ANS-12
             dest: ~/.ansible.cfg
             mode: "0660"
+
